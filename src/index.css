@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+/* Reset */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* Allow normal layout and scrolling */
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+/* Custom game container styling */
+.game-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+}
+/* === Glitch Effect for Cyber Text === */
+.glitch {
+  position: relative;
+  color: #0ff;
+  font-weight: bold;
+  text-shadow: 0 0 2px #0ff, 0 0 5px #0ff, 0 0 10px #0ff;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  color: #0ff;
+  z-index: -1;
+}
+
+.glitch::before {
+  animation: glitchTop 1s infinite linear alternate-reverse;
+  top: -2px;
+  text-shadow: -2px 0 red;
+}
+
+.glitch::after {
+  animation: glitchBottom 1s infinite linear alternate-reverse;
+  top: 2px;
+  text-shadow: 2px 0 blue;
+}
+
+@keyframes glitchTop {
+  0% { clip: rect(0, 9999px, 0, 0); }
+  10% { clip: rect(0, 9999px, 4px, 0); }
+  20% { clip: rect(0, 9999px, 0, 0); }
+  30% { clip: rect(2px, 9999px, 5px, 0); }
+  40% { clip: rect(0, 9999px, 0, 0); }
+  100% { clip: rect(0, 9999px, 0, 0); }
+}
+
+@keyframes glitchBottom {
+  0% { clip: rect(0, 9999px, 0, 0); }
+  10% { clip: rect(6px, 9999px, 10px, 0); }
+  20% { clip: rect(0, 9999px, 0, 0); }
+  30% { clip: rect(4px, 9999px, 8px, 0); }
+  40% { clip: rect(0, 9999px, 0, 0); }
+  100% { clip: rect(0, 9999px, 0, 0); }
+}
