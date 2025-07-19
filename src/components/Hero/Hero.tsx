@@ -21,9 +21,10 @@ interface IHeroProps {
   onMove: (gridX: number, gridY: number) => void
   collisionMap: number[]
   cols: number
+  currentLevel:number
 }
 
-export const Hero = ({ texture, onMove , collisionMap , cols }: IHeroProps) => {
+export const Hero = ({ texture, onMove , collisionMap , cols , currentLevel }: IHeroProps) => {
   const position = useRef({ x: DEFAULT_X_POS, y: DEFAULT_Y_POS })
   const targetPosition = useRef<{ x: number; y: number } | null>(null)
   const currentDirection = useRef<Direction | null>(null)
@@ -42,7 +43,22 @@ export const Hero = ({ texture, onMove , collisionMap , cols }: IHeroProps) => {
     totalFrames: 9,
     animationSpeed: ANIMATION_SPEED,
   })
-
+  useEffect(() => {
+    position.current.x = DEFAULT_X_POS
+    position.current.y = DEFAULT_Y_POS
+    targetPosition.current = null
+    currentDirection.current = null
+  
+    // Simulate one step down movement
+    const simulatedDirection: Direction = 'DOWN'
+    const newTarget = calculateNewTarget(DEFAULT_X_POS, DEFAULT_Y_POS, simulatedDirection)
+  
+    if (checkCanMove(newTarget, collisionMap, cols)) {
+      currentDirection.current = simulatedDirection
+      targetPosition.current = newTarget
+    }
+  }, [currentLevel])
+  
   useEffect(() => {
     onMove(position.current.x, position.current.y)
   }, [onMove])

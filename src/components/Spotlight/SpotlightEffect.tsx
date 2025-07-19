@@ -13,7 +13,7 @@ interface SpotlightMaskProps {
 export const SpotlightMask = ({
   heroX,
   heroY,
-  radius = 120,
+  radius = 150,
   screenWidth ,
   screenHeight,
 }: SpotlightMaskProps) => {

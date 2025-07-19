@@ -11,6 +11,6 @@ export const OFFSET_Y = TILE_SIZE / 2
 export const MOVE_SPEED = 0.07
 export const ANIMATION_SPEED = 0.4
 export const DEFAULT_X_POS = TILE_SIZE * 10
-export const DEFAULT_Y_POS = TILE_SIZE * 15
+export const DEFAULT_Y_POS = TILE_SIZE * 14
 
 export const ZOOM = 2
