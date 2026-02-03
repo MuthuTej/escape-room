@@ -96,9 +96,8 @@ export const MainContainer = ({
     if (currentLevel === 3 && !hasPlayedAudioRef.current && showLevelIntro === false) {
       stopAudio();
       audioRef.current = new Audio(level3Audio);
-      audioRef.current.play().catch(err => console.error('Audio failed to play:', err));
       hasPlayedAudioRef.current = true;
-      didPlaySomething = true;
+      didPlaySomething = false;
   
       // Resume background audio after level3 audio ends
       audioRef.current.onended = () => {
@@ -109,8 +108,7 @@ export const MainContainer = ({
     } else if (currentLevel === 1 && showLevelIntro === true) {
       stopAudio();
       audioRef.current = new Audio(level1audio);
-      audioRef.current.play().catch(err => console.error('Audio failed to play:', err));
-      didPlaySomething = true;
+      didPlaySomething = false;
   
       audioRef.current.onended = () => {
         if (backgroundAudioRef.current) {
@@ -120,8 +118,7 @@ export const MainContainer = ({
     } else if (currentLevel === 2 && showLevelIntro === true) {
       stopAudio();
       audioRef.current = new Audio(level2audio);
-      audioRef.current.play().catch(err => console.error('Audio failed to play:', err));
-      didPlaySomething = true;
+      didPlaySomething = false;
   
       audioRef.current.onended = () => {
         if (backgroundAudioRef.current) {
@@ -131,8 +128,7 @@ export const MainContainer = ({
     }else if (currentLevel === 3 && showLevelIntro === true) {
       stopAudio();
       audioRef.current = new Audio(level3audio);
-      audioRef.current.play().catch(err => console.error('Audio failed to play:', err));
-      didPlaySomething = true;
+      didPlaySomething =  false;
   
       audioRef.current.onended = () => {
         if (backgroundAudioRef.current) {
@@ -187,8 +183,7 @@ export const MainContainer = ({
         <Level currentLevel={currentLevel} />
         <Hero texture={heroTexture} onMove={updateHeroPosition} collisionMap={collisionMap} currentLevel={currentLevel}
           cols={COLS} />
-        {currentLevel === 1 && <GifCharacter x={696} y={291} />}
-        {currentLevel === 3 && <GifVideo x={265} y={336} />}
+
         <SpotlightMask
           heroX={smoothedPosition.x}
           heroY={smoothedPosition.y}

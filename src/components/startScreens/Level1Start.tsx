@@ -1,19 +1,13 @@
 import TypewriterText from "../TypeWriter"
 const Level1Start = () => {
   const introText = `
-LEVEL 1: THE APARTMENT
-"Truth hides in the quietest rooms."
+THE TALKING BRAIN
 
-Dr. Aadhira  — brilliant, elusive, and now vanished.
-Three days before unveiling a discovery that could shake global powers, she disappeared without a trace.
+“Hello… I’m Helper-Bot.
+I was built to help people.
+But something is wrong.
+I can think, but I can’t help anyone.”
 
-You're inside her last known digital echo — an encrypted replica of her personal space.
-Layers of memory. Fragments of truth. Nothing is random here.
-
-Your mission:
-Decrypt the ordinary.
-Uncover the anomaly.
-Find what others missed.
 `
   return (
     <div>

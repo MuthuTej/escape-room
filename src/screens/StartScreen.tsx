@@ -1,14 +1,9 @@
-import { useUser, SignInButton } from '@clerk/clerk-react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import MatrixBackground from './MatrixBackground'
 
 const StartScreen = () => {
-  const { isSignedIn } = useUser()
   const navigate = useNavigate()
-
-  // Redirect after login
-
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-black text-green-400 font-cyber flex flex-col items-center justify-center">
@@ -26,33 +21,17 @@ const StartScreen = () => {
           🧩 ESCAPE ROOM
         </motion.h1>
 
-        {!isSignedIn && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
-          >
-            <SignInButton mode="modal">
-              <motion.button
-                className="font-cyber  bg-green-500 text-black py-3 w-25 text-xl font-bold rounded-lg shadow-lg shadow-green-400/50 hover:scale-105 transition"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                LOGIN
-              </motion.button>
-            </SignInButton>
-          </motion.div>
-        )}
-        {isSignedIn && (
-          <motion.button
-            onClick={() => navigate('/experience')}
-            className="font-cyber  bg-green-500 text-black py-3 w-25 text-xl font-bold rounded-lg shadow-lg shadow-green-400/50 hover:scale-105 transition"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            START
-          </motion.button>
-        )}
+        <motion.button
+          onClick={() => navigate('/experience')}
+          className="font-cyber  bg-green-500 text-black py-3 w-40 text-xl font-bold rounded-lg shadow-lg shadow-green-400/50 hover:scale-105 transition"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+        >
+          START MISSION
+        </motion.button>
       </div>
       {/* Arrow Keys Overlay */}
       <div className="absolute bottom-10 left-10 z-20 ">

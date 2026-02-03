@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { LEVEL_RIDDLES, LEVEL_HINTS } from '../../constants/levels'
 
 interface Props {
   password: string
@@ -7,8 +8,7 @@ interface Props {
   onSubmit: () => void
   time: number
   currentLevel: number
-  smoothedPosition: { x: number; y: number }; // ← Add this
-
+  smoothedPosition: { x: number; y: number }
 }
 
 export const PasswordOverlay = ({
@@ -20,33 +20,33 @@ export const PasswordOverlay = ({
   smoothedPosition,
 }: Props) => {
   const [showModal, setShowModal] = useState(false)
+  const [showHint, setShowHint] = useState(false)
 
   useEffect(() => {
     document.body.style.overflow = showModal ? 'hidden' : 'auto'
+    if (!showModal) setShowHint(false) // Reset hint when closing modal
     return () => {
       document.body.style.overflow = 'auto'
     }
   }, [showModal])
-  console.log(smoothedPosition);
 
   return (
     <>
       {/* Trigger Button */}
-      {((smoothedPosition.x >= 575 &&
+      {((smoothedPosition.x >= 635 &&
         smoothedPosition.x <= 735 &&
-        smoothedPosition.y >= 290 &&
-        smoothedPosition.y <= 390 &&
+        smoothedPosition.y >= 352 &&
+        smoothedPosition.y <= 450 &&
         currentLevel === 1) ||
-
-        (smoothedPosition.x >= 448 &&
-          smoothedPosition.x <= 639 &&
+        (smoothedPosition.x >= 320 &&
+          smoothedPosition.x <= 450 &&
           smoothedPosition.y <= 480 &&
           smoothedPosition.y >= 416 &&
           currentLevel === 2) ||
-        (smoothedPosition.x >= 65 &&
-          smoothedPosition.x <= 416 &&
-          smoothedPosition.y <= 224 &&
-          smoothedPosition.y >= 64 &&
+        (smoothedPosition.x >= 352 &&
+          smoothedPosition.x <= 447 &&
+          smoothedPosition.y <= 447 &&
+          smoothedPosition.y >= 383 &&
           currentLevel === 3)) && (
           <motion.button
             onClick={() => setShowModal(true)}
@@ -69,10 +69,7 @@ export const PasswordOverlay = ({
           >
             🔐 Enter Password
           </motion.button>
-
         )}
-
-
 
       {/* Modal */}
       <AnimatePresence>
@@ -94,7 +91,7 @@ export const PasswordOverlay = ({
               {/* Close Button */}
               <button
                 onClick={() => setShowModal(false)}
-                className="absolute !top-2 !right-2 text-green-400 hover:text-green-300 text-xl font-bold "
+                className="absolute !top-2 !right-2 text-green-400 hover:text-green-300 text-xl font-bold"
               >
                 ✕
               </button>
@@ -108,18 +105,46 @@ export const PasswordOverlay = ({
               </h2>
 
               {/* Riddle Prompt */}
-              <p className="text-green-300 text-sm font-cyber !mb-4">
-                To proceed, solve the riddle:<br />
-                <span className="italic text-green-500">
-                  Enter the password...
-                </span>
-              </p>
+              <div className="!mb-6">
+                <p className="text-green-300 text-sm font-cyber !mb-2 uppercase tracking-tight opacity-70">
+                  Mission Query:
+                </p>
+                <p className="text-green-100 text-base font-cyber leading-relaxed italic border-l-2 border-green-500 !pl-4">
+                  "{LEVEL_RIDDLES[currentLevel]}"
+                </p>
+              </div>
+
+              {/* Hint Section */}
+              <div className="!mb-6">
+                <button
+                  onClick={() => setShowHint(!showHint)}
+                  className="text-xs text-green-500/70 hover:text-green-400 font-cyber flex items-center gap-2 transition-colors"
+                >
+                  {showHint ? '▲ HIDE HINT' : '▼ REQUEST HINT'}
+                </button>
+                <AnimatePresence>
+                  {showHint && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <p className="!mt-2 text-sm text-green-400/80 bg-green-900/20 !p-3 rounded border border-green-500/10 italic font-cyber">
+                        {LEVEL_HINTS[currentLevel]}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
 
               {/* Password Form */}
               <form
                 onSubmit={(e) => {
                   e.preventDefault()
                   onSubmit()
+                  // Only close if correct? The parent handles submit, usually we close on success.
+                  // For now keeping original behavior or slightly adjusted
                   setShowModal(false)
                 }}
                 className="flex items-center !gap-2"
@@ -127,28 +152,29 @@ export const PasswordOverlay = ({
                 <input
                   value={password}
                   onChange={(e) => onPasswordChange(e.target.value)}
-                  placeholder="Type your answer..."
-                  className="flex-1 !px-3 !py-2 rounded-md font-cyber text-sm text-green-200 bg-black border border-green-500/40 placeholder:text-green-400 focus:outline-none focus:ring focus:ring-green-400/40"
+                  placeholder="Intercepted signal..."
+                  className="flex-1 !px-3 !py-2 rounded-md font-cyber text-sm text-green-200 bg-black border border-green-500/40 placeholder:text-green-700 focus:outline-none focus:ring focus:ring-green-400/40"
                   autoFocus
                 />
                 <motion.button
                   type="submit"
-                  className="!px-4 !py-2 bg-green-500 hover:bg-green-600 text-black text-sm rounded font-cyber shadow-md shadow-green-300/30"
+                  className="!px-6 !py-2 bg-green-500 hover:bg-green-400 text-black text-sm rounded font-cyber font-bold shadow-md shadow-green-300/20"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  ENTER
+                  DECODE
                 </motion.button>
               </form>
 
               {/* Time Display */}
               <motion.div
-                className="!mt-4 text-xs text-green-400 font-cyber"
+                className="!mt-6 text-[10px] text-green-500/50 font-cyber tracking-widest flex justify-between items-center border-t border-green-500/10 !pt-4"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
               >
-                🕒 Time Elapsed: {time}s
+                <span>SYNC_STATUS: ACTIVE</span>
+                <span>ELAPSED_TIME: {time}s</span>
               </motion.div>
             </motion.div>
           </motion.div>

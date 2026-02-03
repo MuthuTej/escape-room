@@ -4,11 +4,11 @@ import { MainContainer } from './MainContainer/MainContainer'
 import { calculateCanvasSize } from '../../helpers/common'
 import { PasswordOverlay } from './PasswordOverlay'
 import { LEVEL_PASSWORDS } from '../../constants/levels'
-import { useUser } from '@clerk/clerk-react'
 import { GifCharacter } from '../glitchCharacter/glitchCharacter'
 import Level1Start from '../startScreens/Level1Start'
 import Level2Start from '../startScreens/Level2Start'
 import Level3Start from '../startScreens/Level3Start'
+import { useNavigate } from 'react-router-dom'
 
 export const Experience = () => {
   const [canvasSize, setCanvasSize] = useState(calculateCanvasSize())
@@ -20,7 +20,7 @@ export const Experience = () => {
   const [showLevelIntro, setShowLevelIntro] = useState(true) // <- NEW
   const [heroSmoothedPosition, setHeroSmoothedPosition] = useState({ x: 0, y: 0 });
 
-  const { user } = useUser()
+  const navigate = useNavigate()
 
   const updateCanvasSize = useCallback(() => {
     setCanvasSize(calculateCanvasSize())
@@ -55,13 +55,8 @@ export const Experience = () => {
         setElapsedTime(0)
         setPassword('')
       } else {
-        await user?.update({
-          unsafeMetadata: {
-            levelTimings: [...levelTimings, timeTaken],
-            totalTime: [...levelTimings, timeTaken].reduce((a, b) => a + b, 0),
-          },
-        })
-        alert('✅ Game completed! Your times are stored.')
+        // Redirection to Result screen with timings
+        navigate('/result', { state: { timings: [...levelTimings, timeTaken] } })
       }
     } else {
       alert('❌ Wrong password. Try again.')
@@ -94,13 +89,13 @@ export const Experience = () => {
 
       {/* Overlay UI for password + timer */}
       <PasswordOverlay
-  password={password}
-  onPasswordChange={setPassword}
-  onSubmit={handlePasswordSubmit}
-  time={elapsedTime}
-  currentLevel={currentLevel}
-  smoothedPosition={heroSmoothedPosition} // ← new prop
-/>
+        password={password}
+        onPasswordChange={setPassword}
+        onSubmit={handlePasswordSubmit}
+        time={elapsedTime}
+        currentLevel={currentLevel}
+        smoothedPosition={heroSmoothedPosition} // ← new prop
+      />
 
 
       {/* Animated GIF character (above the PIXI canvas) */}
@@ -108,14 +103,14 @@ export const Experience = () => {
 
       {/* PIXI Canvas (underneath the gif) */}
       <Stage width={canvasSize.width} height={canvasSize.height}>
-      <MainContainer
-  canvasSize={canvasSize}
-  currentLevel={currentLevel}
-  showLevelIntro={showLevelIntro}
-  onSmoothedPositionChange={(pos) => {
-    setHeroSmoothedPosition(pos) // Save to parent state
-  }}
->
+        <MainContainer
+          canvasSize={canvasSize}
+          currentLevel={currentLevel}
+          showLevelIntro={showLevelIntro}
+          onSmoothedPositionChange={(pos) => {
+            setHeroSmoothedPosition(pos) // Save to parent state
+          }}
+        >
 
           {/* any children if applicable */}
         </MainContainer>
