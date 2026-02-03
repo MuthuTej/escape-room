@@ -9,8 +9,7 @@ import backgroundAsset from '../../../assets/background.jpg'
 import heroAsset from '@/assets/hero.png'
 import { SpotlightMask } from '../../Spotlight/SpotlightEffect'
 import { COLLISION_MAPS } from '../../../constants/collision-map'
-import { GifCharacter } from '../../glitchCharacter/glitchCharacter'
-import { GifVideo } from '../../glitchCharacter/glitchVideo'
+
 import level3Audio from  '/finalMessage.wav'
 import level1audio from "/audio/level1_audio.wav"
 import level2audio from "/audio/level2_audio.wav"
